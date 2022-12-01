@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+today=$(date | cut -d' ' -f3)
+
+mkdir "src/$today"
+cat TEMPLATE.ts | sed "s/TODAY/$today/g" > src/$today/a.ts
+cp src/$today/a.ts src/$today/b.ts
+
+aocdl
+mv input.txt src/$today
+
+echo "Set up today's template successfully - run 'nodemon src/$today/a.ts --exec=ts-node'"
