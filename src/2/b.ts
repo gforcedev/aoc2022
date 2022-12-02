@@ -2,36 +2,37 @@ import { readFileSync } from "fs";
 
 const input = readFileSync("src/2/input.txt").toString();
 
-type Shape = "rock" | "paper" | "scissors";
+type Shape = "ROCK" | "PAPER" | "SCISSORS";
+type Result = "WIN" | "LOSS" | "DRAW";
 
-const SHAPE_CHARS = {
-  A: "rock",
-  B: "paper",
-  C: "scissors",
+const INPUT_MAPPINGS = {
+  A: "ROCK",
+  B: "PAPER",
+  C: "SCISSORS",
   X: "LOSS",
   Y: "DRAW",
   Z: "WIN",
 } as { [k: string]: string };
 
 const WIN_TABLE: { [k in Shape]: Shape } = {
-  rock: "paper",
-  paper: "scissors",
-  scissors: "rock",
+  ROCK: "PAPER",
+  PAPER: "SCISSORS",
+  SCISSORS: "ROCK",
 };
 
 const LOSS_TABLE: { [k in Shape]: Shape } = {
-  rock: "scissors",
-  paper: "rock",
-  scissors: "paper",
+  ROCK: "SCISSORS",
+  PAPER: "ROCK",
+  SCISSORS: "PAPER",
 };
 
 const SHAPE_SCORES: { [k in Shape]: number } = {
-  rock: 1,
-  paper: 2,
-  scissors: 3,
+  ROCK: 1,
+  PAPER: 2,
+  SCISSORS: 3,
 };
 
-const OUTCOME_SCORES = {
+const OUTCOME_SCORES: { [k in Result]: number } = {
   WIN: 6,
   DRAW: 3,
   LOSS: 0,
@@ -40,12 +41,14 @@ const OUTCOME_SCORES = {
 const answer = input
   .split("\n")
   .slice(0, -1)
-  .map((s) => s.split(" ").map((shapeChar) => SHAPE_CHARS[shapeChar] as string))
+  .map((s) =>
+    s.split(" ").map((inputChar) => INPUT_MAPPINGS[inputChar] as string)
+  )
   .map((game) => {
-    const them = game[0] as "rock" | "paper" | "scissors";
-    const result = game[1] as "LOSS" | "DRAW" | "WIN";
+    const them = game[0] as Shape;
+    const result = game[1] as Result;
 
-    let you: "rock" | "paper" | "scissors" | undefined;
+    let you: Shape | undefined;
 
     if (result === "DRAW") {
       you = them;
