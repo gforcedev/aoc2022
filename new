@@ -2,7 +2,7 @@
 
 set -e
 
-today=$(date | cut -d' ' -f3)
+today=$(date | awk '{print $2}')
 
 mkdir "src/$today"
 cat TEMPLATE.ts | sed "s/TODAY/$today/g" > src/$today/a.ts
